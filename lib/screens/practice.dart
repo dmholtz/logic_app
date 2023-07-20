@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:logic_app/widgets/DifficultySelector.dart';
 import 'package:logic_app/widgets/NumVariableSlider.dart';
 import 'package:logic_app/widgets/QuizTypeSelector.dart';
@@ -26,7 +27,8 @@ class PracticeScreen extends ConsumerWidget {
               const TimerSlider(),
               ElevatedButton(
                 onPressed: () {
-                  //ref.read(settingsProvider.notifier).increment();
+                  context
+                      .goNamed('quiz', queryParameters: {"mode": "practice"});
                 },
                 child: const Text('Reveal Quiz'),
               ),

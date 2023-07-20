@@ -1,6 +1,8 @@
-enum Difficulty { easy, medium, hard }
+enum QuizMode { practice, competition }
 
 enum QuizType { sat, taut, equiv }
+
+enum Difficulty { easy, medium, hard }
 
 const minQuizTime = 10; // seconds
 const maxQuizTime = 60; // seconds

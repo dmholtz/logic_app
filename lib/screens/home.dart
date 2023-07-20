@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttericon/font_awesome_icons.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logic_app/state/navigation.dart';
 
@@ -18,17 +19,18 @@ class HomeScreen extends ConsumerWidget {
   static const tabs = [
     _NavBarItemWithLocator(
       navigationLocator: "/practice",
-      icon: Icon(Icons.videogame_asset_outlined),
+      icon: Icon(FontAwesome.gamepad),
       label: "Practice",
     ),
     _NavBarItemWithLocator(
       navigationLocator: "/progress",
-      icon: Icon(Icons.check_circle_outline),
+      icon: Icon(FontAwesome.location),
+      //icon: Icon(Octicons.milestone),
       label: "Progress",
     ),
     _NavBarItemWithLocator(
       navigationLocator: "/competition",
-      icon: Icon(Icons.leaderboard),
+      icon: Icon(FontAwesome.award),
       label: "Competition",
     ),
     _NavBarItemWithLocator(

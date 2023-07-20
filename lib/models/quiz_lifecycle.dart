@@ -1,0 +1,1 @@
+enum QuizLifecycleState { answering, solution }
