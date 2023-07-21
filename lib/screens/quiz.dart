@@ -27,10 +27,15 @@ class QuizScreen extends ConsumerWidget {
                 groupValue: (ref.watch(currentQuizProvider) as SingleChoiceQuiz)
                     .getSelectedId(),
                 onChanged: (value) {
-                  var answeredQuiz =
-                      (ref.read(currentQuizProvider) as SingleChoiceQuiz)
-                          .selectAnswer(answer.id);
-                  ref.read(currentQuizProvider.notifier).setQuiz(answeredQuiz);
+                  if (ref.watch(quizLifecycleStateProvider) ==
+                      QuizLifecycleState.answering) {
+                    var answeredQuiz =
+                        (ref.read(currentQuizProvider) as SingleChoiceQuiz)
+                            .selectAnswer(answer.id);
+                    ref
+                        .read(currentQuizProvider.notifier)
+                        .setQuiz(answeredQuiz);
+                  }
                 },
                 tileColor: ref.watch(quizLifecycleStateProvider) ==
                         QuizLifecycleState.solution
@@ -49,10 +54,13 @@ class QuizScreen extends ConsumerWidget {
               title: Text(answer.answer),
               value: answer.isSelected,
               onChanged: (value) {
-                var answeredQuiz =
-                    (ref.read(currentQuizProvider) as MultipleChoiceQuiz)
-                        .answerQuestion(answer.id, value ?? false);
-                ref.read(currentQuizProvider.notifier).setQuiz(answeredQuiz);
+                if (ref.watch(quizLifecycleStateProvider) ==
+                    QuizLifecycleState.answering) {
+                  var answeredQuiz =
+                      (ref.read(currentQuizProvider) as MultipleChoiceQuiz)
+                          .answerQuestion(answer.id, value ?? false);
+                  ref.read(currentQuizProvider.notifier).setQuiz(answeredQuiz);
+                }
               },
               tileColor: ref.watch(quizLifecycleStateProvider) ==
                       QuizLifecycleState.solution
