@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:logic_app/models/possible_answer.dart';
 import 'package:logic_app/models/quiz.dart';
 import 'package:logic_app/models/quiz_config.dart';
@@ -11,9 +10,7 @@ import 'package:logic_app/state/quiz_lifecycle.dart';
 import 'package:logic_app/state/quiz_timer.dart';
 
 class QuizScreen extends ConsumerWidget {
-  final QuizMode mode;
-
-  const QuizScreen({required this.mode, super.key});
+  const QuizScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -108,46 +105,26 @@ class QuizScreen extends ConsumerWidget {
       );
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Quiz"),
-        actions: [
-          IconButton(
-            onPressed: () {
-              switch (mode) {
-                case QuizMode.practice:
-                  context.go('/practice');
-                  break;
-                case QuizMode.competition:
-                  context.go('/competition');
-                  break;
-              }
-            },
-            icon: const Icon(Icons.close_outlined),
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Text(ref.watch(questionProvider).toString()),
+          const SizedBox(height: 20),
+          SingleChildScrollView(
+            child: Column(
+              children: answerWidgets,
+            ),
+          ),
+          Column(
+            children: [
+              const SizedBox(height: 20),
+              countdownWidget ?? const SizedBox.shrink(),
+              const SizedBox(height: 20),
+              bottomButton,
+            ],
           ),
         ],
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Text(ref.watch(questionProvider).toString()),
-            const SizedBox(height: 20),
-            SingleChildScrollView(
-              child: Column(
-                children: answerWidgets,
-              ),
-            ),
-            Column(
-              children: [
-                const SizedBox(height: 20),
-                countdownWidget ?? const SizedBox.shrink(),
-                const SizedBox(height: 20),
-                bottomButton,
-              ],
-            ),
-          ],
-        ),
       ),
     );
   }

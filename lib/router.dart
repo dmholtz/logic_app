@@ -6,7 +6,7 @@ import 'package:logic_app/screens/home.dart';
 import 'package:logic_app/screens/leaderboard.dart';
 import 'package:logic_app/screens/practice.dart';
 import 'package:logic_app/screens/progress.dart';
-import 'package:logic_app/screens/quiz.dart';
+import 'package:logic_app/screens/quizWrapper.dart';
 import 'package:logic_app/screens/settings.dart';
 import 'package:logic_app/screens/statistics.dart';
 
@@ -119,7 +119,7 @@ final router = GoRouter(
           }
 
           return CustomTransitionPage(
-              child: QuizScreen(mode: quizMode),
+              child: QuizWrapperScreen(mode: quizMode),
               transitionsBuilder:
                   (context, animation, secondaryAnimation, child) {
                 return FadeTransition(
