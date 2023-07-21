@@ -6,7 +6,9 @@ import 'package:logic_app/models/quiz.dart';
 import 'package:logic_app/models/quiz_config.dart';
 import 'package:logic_app/models/quiz_lifecycle.dart';
 import 'package:logic_app/state/current_quiz.dart';
+import 'package:logic_app/state/practice.dart';
 import 'package:logic_app/state/quiz_lifecycle.dart';
+import 'package:logic_app/state/quiz_timer.dart';
 
 class QuizScreen extends ConsumerWidget {
   final QuizMode mode;
@@ -93,6 +95,19 @@ class QuizScreen extends ConsumerWidget {
         )
     };
 
+    Widget? countdownWidget;
+    if (ref.watch(quizTimeProvider) <= maxQuizTime) {
+      AsyncValue<int> remainingTime = ref.watch(countdownProvider);
+
+      remainingTime.when(
+        loading: () {},
+        data: (data) {
+          countdownWidget = Text(data.toString());
+        },
+        error: (Object error, StackTrace stackTrace) {},
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Quiz"),
@@ -123,8 +138,14 @@ class QuizScreen extends ConsumerWidget {
                 children: answerWidgets,
               ),
             ),
-            const SizedBox(height: 20),
-            bottomButton,
+            Column(
+              children: [
+                const SizedBox(height: 20),
+                countdownWidget ?? const SizedBox.shrink(),
+                const SizedBox(height: 20),
+                bottomButton,
+              ],
+            ),
           ],
         ),
       ),

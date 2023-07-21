@@ -43,6 +43,10 @@ final numVarsProvider =
 final quizTimeProvider =
     Provider<int>((ref) => ref.watch(quizConfigProvider).time);
 
+final isLimitedQuizTimeProvider = Provider<bool>((ref) {
+  return ref.watch(quizTimeProvider) <= maxQuizTime;
+});
+
 // maps quizTimeProvider to a value between 0 and 1 for the slider
 final quizTimeSliderValueProvider = Provider<double>((ref) {
   if (ref.watch(quizTimeProvider) > maxQuizTime) {
