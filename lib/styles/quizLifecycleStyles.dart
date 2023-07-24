@@ -6,9 +6,9 @@ import 'package:logic_app/state/quiz_lifecycle.dart';
 
 Color determineBackgroundColor(BuildContext context, WidgetRef ref) {
   switch (ref.watch(quizLifecycleStateProvider)) {
-    case QuizLifecycleState.answering:
+    case QuizLifecycleState.answering || QuizLifecycleState.solution:
       return Theme.of(context).canvasColor;
-    case QuizLifecycleState.solution:
+    case QuizLifecycleState.feedback:
       if (ref.watch(currentQuizProvider).isAnsweredCorrectly()) {
         return Colors.lightGreen;
       } else {

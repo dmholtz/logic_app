@@ -22,9 +22,13 @@ class QuizWrapperScreen extends ConsumerWidget {
         title = const Text("Quiz");
         body = const QuizScreen();
         break;
-      case QuizLifecycleState.solution:
+      case QuizLifecycleState.feedback:
         title = const Text("");
         body = const QuizFeedbackScreen();
+        break;
+      case QuizLifecycleState.solution:
+        title = const Text("Solution");
+        body = const QuizScreen();
         break;
     }
 

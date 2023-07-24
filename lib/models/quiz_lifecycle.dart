@@ -1,1 +1,5 @@
-enum QuizLifecycleState { answering, solution }
+enum QuizLifecycleState {
+  answering,
+  feedback,
+  solution,
+}

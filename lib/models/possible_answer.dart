@@ -1,4 +1,4 @@
-enum QuizAnswerMode { singleChoice, multipleChoice }
+enum QuizQuestionType { singleChoice, multipleChoice }
 
 class PossibleAnswer {
   final int id;

@@ -16,7 +16,7 @@ class QuizScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     List<Widget> answerWidgets = List.empty();
 
-    if (ref.watch(quizAnswerModeProvider) == QuizAnswerMode.singleChoice) {
+    if (ref.watch(quizAnswerModeProvider) == QuizQuestionType.singleChoice) {
       answerWidgets = List.from(
         ref.watch(possibleAnswersProvider).map(
           (answer) {
@@ -78,7 +78,7 @@ class QuizScreen extends ConsumerWidget {
           onPressed: () {
             ref
                 .read(quizLifecycleStateProvider.notifier)
-                .setQuizLifecycleState(QuizLifecycleState.solution);
+                .setQuizLifecycleState(QuizLifecycleState.feedback);
           },
           child: const Text("Submit"),
         ),
@@ -89,7 +89,8 @@ class QuizScreen extends ConsumerWidget {
                 .setQuizLifecycleState(QuizLifecycleState.answering);
           },
           child: const Text("Next"),
-        )
+        ),
+      QuizLifecycleState.feedback => Container(),
     };
 
     Widget? countdownWidget;
