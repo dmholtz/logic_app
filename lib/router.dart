@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logic_app/models/quiz_config.dart';
+import 'package:logic_app/screens/app_tour.dart';
 import 'package:logic_app/screens/competition.dart';
 import 'package:logic_app/screens/home.dart';
 import 'package:logic_app/screens/leaderboard.dart';
@@ -102,32 +103,62 @@ final router = GoRouter(
       ],
     ),
     GoRoute(
-        path: "/quiz",
-        name: "quiz",
-        //builder: (context, state) => const QuizScreen(),
-        pageBuilder: (context, state) {
-          var queryParameters = state.queryParameters;
-          var quizMode = QuizMode.practice;
-          if (queryParameters.containsKey("quiz_mode")) {
-            var quizModeParam = queryParameters['quiz_mode'];
-            switch (quizModeParam) {
-              case "practice":
-                quizMode = QuizMode.practice;
-              case "competition":
-                quizMode = QuizMode.competition;
-            }
+      path: "/quiz",
+      name: "quiz",
+      //builder: (context, state) => const QuizScreen(),
+      pageBuilder: (context, state) {
+        var queryParameters = state.queryParameters;
+        var quizMode = QuizMode.practice;
+        if (queryParameters.containsKey("quiz_mode")) {
+          var quizModeParam = queryParameters['quiz_mode'];
+          switch (quizModeParam) {
+            case "practice":
+              quizMode = QuizMode.practice;
+            case "competition":
+              quizMode = QuizMode.competition;
           }
+        }
 
-          return CustomTransitionPage(
-              child: QuizWrapperScreen(mode: quizMode),
-              transitionsBuilder:
-                  (context, animation, secondaryAnimation, child) {
-                return FadeTransition(
-                  opacity:
-                      CurveTween(curve: Curves.easeOutCirc).animate(animation),
-                  child: child,
-                );
-              });
-        }),
+        return CustomTransitionPage(
+            child: QuizWrapperScreen(mode: quizMode),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return FadeTransition(
+                opacity:
+                    CurveTween(curve: Curves.easeOutCirc).animate(animation),
+                child: child,
+              );
+            });
+      },
+    ),
+    GoRoute(
+      path: "/app-tour",
+      name: "app-tour",
+      builder: (context, state) => const AppTourScreen(),
+      //pageBuilder: (context, state) {
+      //  var queryParameters = state.queryParameters;
+      //  var quizMode = QuizMode.practice;
+      //  if (queryParameters.containsKey("quiz_mode")) {
+      //    var quizModeParam = queryParameters['quiz_mode'];
+      //    switch (quizModeParam) {
+      //      case "practice":
+      //        quizMode = QuizMode.practice;
+      //      case "competition":
+      //        quizMode = QuizMode.competition;
+      //    }
+      //  }
+//
+      //  return CustomTransitionPage(
+      //      child: QuizWrapperScreen(mode: quizMode),
+      //      transitionsBuilder:
+      //          (context, animation, secondaryAnimation, child) {
+      //        return FadeTransition(
+      //          opacity:
+      //              CurveTween(curve: Curves.easeOutCirc).animate(animation),
+      //          child: child,
+      //        );
+      //      });
+      //},
+    ),
   ],
 );
