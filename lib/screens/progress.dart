@@ -34,7 +34,7 @@ class ProgressScreen extends ConsumerWidget {
                   "Your Level",
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
-                StarProgressIndicator(currentNumberOfStars: 3),
+                StarProgressIndicator(value: 0.53),
               ],
             ),
             const SizedBox(height: 30),
