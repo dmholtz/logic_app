@@ -24,7 +24,7 @@ class HomeScreen extends ConsumerWidget {
     ),
     _NavBarItemWithLocator(
       navigationLocator: "/progress",
-      icon: Icon(FontAwesome.location),
+      icon: Icon(Icons.bar_chart),
       //icon: Icon(Octicons.milestone),
       label: "Progress",
     ),
