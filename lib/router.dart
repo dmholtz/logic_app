@@ -5,6 +5,7 @@ import 'package:logic_app/screens/app_tour.dart';
 import 'package:logic_app/screens/competition.dart';
 import 'package:logic_app/screens/home.dart';
 import 'package:logic_app/screens/leaderboard.dart';
+import 'package:logic_app/screens/login.dart';
 import 'package:logic_app/screens/practice.dart';
 import 'package:logic_app/screens/progress.dart';
 import 'package:logic_app/screens/quizWrapper.dart';
@@ -31,7 +32,7 @@ final router = GoRouter(
     ),
     GoRoute(
       path: "/sign-in",
-      builder: (context, state) => const WelcomeScreen(),
+      builder: (context, state) => const LoginScreen(),
     ),
     ShellRoute(
       navigatorKey: _shellNavigatorKey,
