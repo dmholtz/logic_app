@@ -9,7 +9,9 @@ import 'package:logic_app/screens/practice.dart';
 import 'package:logic_app/screens/progress.dart';
 import 'package:logic_app/screens/quizWrapper.dart';
 import 'package:logic_app/screens/settings.dart';
+import 'package:logic_app/screens/sign_up.dart';
 import 'package:logic_app/screens/statistics.dart';
+import 'package:logic_app/screens/welcome.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> _shellNavigatorKey =
@@ -17,8 +19,20 @@ final GlobalKey<NavigatorState> _shellNavigatorKey =
 
 final router = GoRouter(
   navigatorKey: _rootNavigatorKey,
-  initialLocation: "/practice",
+  initialLocation: "/",
   routes: [
+    GoRoute(
+      path: "/",
+      builder: (context, state) => const WelcomeScreen(),
+    ),
+    GoRoute(
+      path: "/sign-up",
+      builder: (context, state) => const SignupScreen(),
+    ),
+    GoRoute(
+      path: "/sign-in",
+      builder: (context, state) => const WelcomeScreen(),
+    ),
     ShellRoute(
       navigatorKey: _shellNavigatorKey,
       builder: (context, state, child) {
