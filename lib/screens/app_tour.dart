@@ -17,12 +17,16 @@ class AppTourScreen extends ConsumerWidget {
       initialPage: ref.watch(currentAppTourCardProvider),
       keepPage: false,
     );
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('App Tour'),
         actions: [
           TextButton(
               onPressed: () {
+                // save the fact that the user has seen the app tour
+                ref.read(appTourSeenProvider.notifier).setAppTourSeen();
+
                 context.go("/practice");
                 // this is a hack to reset the navigation bar
                 ref.read(activeNavBarProvider.notifier).setSelectedScreen(0);
@@ -63,6 +67,9 @@ class AppTourScreen extends ConsumerWidget {
                     onPressed: () {
                       if (ref.watch(currentAppTourCardProvider) ==
                           ref.watch(appTourContentProvider).length - 1) {
+                        // save the fact that the user has seen the app tour
+                        ref.read(appTourSeenProvider.notifier).setAppTourSeen();
+
                         context.go("/practice");
                         // this is a hack to reset the navigation bar
                         ref

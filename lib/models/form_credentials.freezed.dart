@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$CredentialsForm {
   FormField get username => throw _privateConstructorUsedError;
   FormField get password => throw _privateConstructorUsedError;
+  String get errorMessage => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $CredentialsFormCopyWith<CredentialsForm> get copyWith =>
@@ -30,7 +31,7 @@ abstract class $CredentialsFormCopyWith<$Res> {
           CredentialsForm value, $Res Function(CredentialsForm) then) =
       _$CredentialsFormCopyWithImpl<$Res, CredentialsForm>;
   @useResult
-  $Res call({FormField username, FormField password});
+  $Res call({FormField username, FormField password, String errorMessage});
 
   $FormFieldCopyWith<$Res> get username;
   $FormFieldCopyWith<$Res> get password;
@@ -51,6 +52,7 @@ class _$CredentialsFormCopyWithImpl<$Res, $Val extends CredentialsForm>
   $Res call({
     Object? username = null,
     Object? password = null,
+    Object? errorMessage = null,
   }) {
     return _then(_value.copyWith(
       username: null == username
@@ -61,6 +63,10 @@ class _$CredentialsFormCopyWithImpl<$Res, $Val extends CredentialsForm>
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
               as FormField,
+      errorMessage: null == errorMessage
+          ? _value.errorMessage
+          : errorMessage // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 
@@ -89,7 +95,7 @@ abstract class _$$_CredentialsFormCopyWith<$Res>
       __$$_CredentialsFormCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({FormField username, FormField password});
+  $Res call({FormField username, FormField password, String errorMessage});
 
   @override
   $FormFieldCopyWith<$Res> get username;
@@ -110,6 +116,7 @@ class __$$_CredentialsFormCopyWithImpl<$Res>
   $Res call({
     Object? username = null,
     Object? password = null,
+    Object? errorMessage = null,
   }) {
     return _then(_$_CredentialsForm(
       username: null == username
@@ -120,6 +127,10 @@ class __$$_CredentialsFormCopyWithImpl<$Res>
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
               as FormField,
+      errorMessage: null == errorMessage
+          ? _value.errorMessage
+          : errorMessage // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -127,17 +138,21 @@ class __$$_CredentialsFormCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_CredentialsForm extends _CredentialsForm {
-  const _$_CredentialsForm({required this.username, required this.password})
+  const _$_CredentialsForm(
+      {required this.username, required this.password, this.errorMessage = ""})
       : super._();
 
   @override
   final FormField username;
   @override
   final FormField password;
+  @override
+  @JsonKey()
+  final String errorMessage;
 
   @override
   String toString() {
-    return 'CredentialsForm(username: $username, password: $password)';
+    return 'CredentialsForm(username: $username, password: $password, errorMessage: $errorMessage)';
   }
 
   @override
@@ -148,11 +163,14 @@ class _$_CredentialsForm extends _CredentialsForm {
             (identical(other.username, username) ||
                 other.username == username) &&
             (identical(other.password, password) ||
-                other.password == password));
+                other.password == password) &&
+            (identical(other.errorMessage, errorMessage) ||
+                other.errorMessage == errorMessage));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, username, password);
+  int get hashCode =>
+      Object.hash(runtimeType, username, password, errorMessage);
 
   @JsonKey(ignore: true)
   @override
@@ -164,13 +182,16 @@ class _$_CredentialsForm extends _CredentialsForm {
 abstract class _CredentialsForm extends CredentialsForm {
   const factory _CredentialsForm(
       {required final FormField username,
-      required final FormField password}) = _$_CredentialsForm;
+      required final FormField password,
+      final String errorMessage}) = _$_CredentialsForm;
   const _CredentialsForm._() : super._();
 
   @override
   FormField get username;
   @override
   FormField get password;
+  @override
+  String get errorMessage;
   @override
   @JsonKey(ignore: true)
   _$$_CredentialsFormCopyWith<_$_CredentialsForm> get copyWith =>

@@ -11,6 +11,7 @@ class CredentialsForm with _$CredentialsForm {
   const factory CredentialsForm({
     required FormField username,
     required FormField password,
+    @Default("") String errorMessage,
   }) = _CredentialsForm;
 
   factory CredentialsForm.empty() => const CredentialsForm(

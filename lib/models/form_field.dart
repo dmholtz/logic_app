@@ -9,5 +9,6 @@ class FormField with _$FormField {
   const factory FormField({
     required String value,
     @Default(false) bool isValid,
+    @Default("") String errorMessage,
   }) = _FormField;
 }

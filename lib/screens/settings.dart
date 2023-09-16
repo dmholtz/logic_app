@@ -16,15 +16,11 @@ class SettingsScreen extends ConsumerWidget {
       try {
         final response = await http
             .post(Uri.parse("https://localhost:443/user/logout"), headers: {
-          "Authorization": "Bearer ${ref.read(accessTokenProvider)}"
+          "Authorization": "Bearer ${await ref.read(accessTokenProvider)}"
         });
 
         if (response.statusCode == 200) {
-          String accessToken = response.body;
-          ref.read(accessTokenProvider.notifier).setAccessToken("");
-          if (context.mounted) {
-            context.go('/');
-          }
+          print("Logged out");
         } else {
           print(response.statusCode);
           print(response.body);
@@ -35,6 +31,12 @@ class SettingsScreen extends ConsumerWidget {
         print("Socket");
       } on Error {
         print("Error");
+      }
+
+      // always clear the access token
+      ref.read(accessTokenStateNotifierProvider.notifier).setAccessToken("");
+      if (context.mounted) {
+        context.go('/');
       }
     }
 

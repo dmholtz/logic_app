@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$FormField {
   String get value => throw _privateConstructorUsedError;
   bool get isValid => throw _privateConstructorUsedError;
+  String get errorMessage => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $FormFieldCopyWith<FormField> get copyWith =>
@@ -29,7 +30,7 @@ abstract class $FormFieldCopyWith<$Res> {
   factory $FormFieldCopyWith(FormField value, $Res Function(FormField) then) =
       _$FormFieldCopyWithImpl<$Res, FormField>;
   @useResult
-  $Res call({String value, bool isValid});
+  $Res call({String value, bool isValid, String errorMessage});
 }
 
 /// @nodoc
@@ -47,6 +48,7 @@ class _$FormFieldCopyWithImpl<$Res, $Val extends FormField>
   $Res call({
     Object? value = null,
     Object? isValid = null,
+    Object? errorMessage = null,
   }) {
     return _then(_value.copyWith(
       value: null == value
@@ -57,6 +59,10 @@ class _$FormFieldCopyWithImpl<$Res, $Val extends FormField>
           ? _value.isValid
           : isValid // ignore: cast_nullable_to_non_nullable
               as bool,
+      errorMessage: null == errorMessage
+          ? _value.errorMessage
+          : errorMessage // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -68,7 +74,7 @@ abstract class _$$_FormFieldCopyWith<$Res> implements $FormFieldCopyWith<$Res> {
       __$$_FormFieldCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String value, bool isValid});
+  $Res call({String value, bool isValid, String errorMessage});
 }
 
 /// @nodoc
@@ -84,6 +90,7 @@ class __$$_FormFieldCopyWithImpl<$Res>
   $Res call({
     Object? value = null,
     Object? isValid = null,
+    Object? errorMessage = null,
   }) {
     return _then(_$_FormField(
       value: null == value
@@ -94,6 +101,10 @@ class __$$_FormFieldCopyWithImpl<$Res>
           ? _value.isValid
           : isValid // ignore: cast_nullable_to_non_nullable
               as bool,
+      errorMessage: null == errorMessage
+          ? _value.errorMessage
+          : errorMessage // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -101,17 +112,21 @@ class __$$_FormFieldCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_FormField implements _FormField {
-  const _$_FormField({required this.value, this.isValid = false});
+  const _$_FormField(
+      {required this.value, this.isValid = false, this.errorMessage = ""});
 
   @override
   final String value;
   @override
   @JsonKey()
   final bool isValid;
+  @override
+  @JsonKey()
+  final String errorMessage;
 
   @override
   String toString() {
-    return 'FormField(value: $value, isValid: $isValid)';
+    return 'FormField(value: $value, isValid: $isValid, errorMessage: $errorMessage)';
   }
 
   @override
@@ -120,11 +135,13 @@ class _$_FormField implements _FormField {
         (other.runtimeType == runtimeType &&
             other is _$_FormField &&
             (identical(other.value, value) || other.value == value) &&
-            (identical(other.isValid, isValid) || other.isValid == isValid));
+            (identical(other.isValid, isValid) || other.isValid == isValid) &&
+            (identical(other.errorMessage, errorMessage) ||
+                other.errorMessage == errorMessage));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, value, isValid);
+  int get hashCode => Object.hash(runtimeType, value, isValid, errorMessage);
 
   @JsonKey(ignore: true)
   @override
@@ -134,13 +151,17 @@ class _$_FormField implements _FormField {
 }
 
 abstract class _FormField implements FormField {
-  const factory _FormField({required final String value, final bool isValid}) =
-      _$_FormField;
+  const factory _FormField(
+      {required final String value,
+      final bool isValid,
+      final String errorMessage}) = _$_FormField;
 
   @override
   String get value;
   @override
   bool get isValid;
+  @override
+  String get errorMessage;
   @override
   @JsonKey(ignore: true)
   _$$_FormFieldCopyWith<_$_FormField> get copyWith =>

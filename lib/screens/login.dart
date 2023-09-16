@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:logic_app/state/access_token.dart';
+import 'package:logic_app/state/app_tour.dart';
 import 'package:logic_app/state/credentials_form.dart';
 
 class LoginScreen extends ConsumerWidget {
@@ -30,14 +31,34 @@ class LoginScreen extends ConsumerWidget {
             body: jsonEncode(credentials),
             headers: {"Content-Type": "application/json"});
 
+        print(response.statusCode);
+        print(response.body);
+
         if (response.statusCode == 200) {
+          // save the access token
           String accessToken = response.body;
-          ref.read(accessTokenProvider.notifier).setAccessToken(accessToken);
+          ref
+              .read(accessTokenStateNotifierProvider.notifier)
+              .setAccessToken(accessToken);
+          // reset the form
+          ref.read(credentialsFormProvider.notifier).resetForm();
+
+          // navigate to the app tour or practice screen
           if (context.mounted) {
-            context.go('/app-tour');
+            // only show the AppTour if the user has not seen it before
+            if (ref.watch(appTourSeenProvider) == false) {
+              context.go('/app-tour');
+            } else {
+              context.go('/practice');
+            }
           }
         } else {
-          print(response.statusCode);
+          // reset the password field
+          ref.read(credentialsFormProvider.notifier).setPassword("");
+          // display the error message from server
+          ref
+              .read(credentialsFormProvider.notifier)
+              .setErrorMessage(response.body);
         }
       } on TimeoutException {
         print("Timeout");
@@ -45,6 +66,17 @@ class LoginScreen extends ConsumerWidget {
         print("Socket");
       } on Error {
         print("Error");
+      }
+    }
+
+    checkToken() async {
+      String token = await ref.watch(accessTokenProvider);
+      if (token != "") {
+        if (context.mounted) {
+          context.go('/practice');
+        }
+      } else {
+        login();
       }
     }
 
@@ -78,8 +110,14 @@ class LoginScreen extends ConsumerWidget {
                         .setPassword(value);
                   },
                 ),
+                ref.watch(credentialsFormProvider).errorMessage != ""
+                    ? Text(
+                        ref.watch(credentialsFormProvider).errorMessage,
+                        style: const TextStyle(color: Colors.red),
+                      )
+                    : const SizedBox(height: 0),
                 ElevatedButton(
-                  onPressed: login,
+                  onPressed: checkToken,
                   child: const Text("Log In"),
                 ),
               ],

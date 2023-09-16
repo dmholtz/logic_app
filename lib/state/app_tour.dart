@@ -59,3 +59,16 @@ class AppTourActiveCardNotifier extends StateNotifier<int> {
 final currentAppTourCardProvider =
     StateNotifierProvider<AppTourActiveCardNotifier, int>((ref) =>
         AppTourActiveCardNotifier(ref.watch(appTourContentProvider).length));
+
+class AppTourSeenStateNotifier extends StateNotifier<bool> {
+  AppTourSeenStateNotifier() : super(false);
+
+  void setAppTourSeen() {
+    state = true;
+  }
+}
+
+final appTourSeenProvider =
+    StateNotifierProvider<AppTourSeenStateNotifier, bool>(
+  (ref) => AppTourSeenStateNotifier(),
+);

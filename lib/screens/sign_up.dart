@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -7,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:logic_app/state/credentials_form.dart';
+import 'package:logic_app/widgets/offline_snackbar.dart';
 
 class SignupScreen extends ConsumerWidget {
   const SignupScreen({super.key});
@@ -41,14 +41,13 @@ class SignupScreen extends ConsumerWidget {
             context.go('/sign-in');
           }
         } else {
+          ref
+              .read(credentialsFormProvider.notifier)
+              .setUsernameError("Username already exists");
           print(response.statusCode);
         }
-      } on TimeoutException {
-        print("Timeout");
-      } on SocketException {
-        print("Socket");
-      } on Error {
-        print("Error");
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(offlineSnackbar);
       }
 
       //var resp = http
@@ -117,42 +116,54 @@ class SignupScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: const Text("Sign Up")),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text("Sign Up"),
-          Form(
-            child: Column(
-              children: [
-                TextFormField(
-                  decoration: const InputDecoration(
-                    hintText: "Choose a username",
-                    label: Text("Username"),
+          const Text(
+              "Choose a username and a password to create a new account."),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Form(
+              child: Column(
+                children: [
+                  TextFormField(
+                    decoration: InputDecoration(
+                      hintText: "Choose a username",
+                      label: const Text("Username"),
+                      helperText: ref
+                          .watch(credentialsFormProvider)
+                          .username
+                          .errorMessage,
+                      helperStyle: const TextStyle(color: Colors.red),
+                    ),
+                    onChanged: (value) {
+                      ref
+                          .read(credentialsFormProvider.notifier)
+                          .setUsername(value);
+                    },
                   ),
-                  onChanged: (value) {
-                    ref
-                        .read(credentialsFormProvider.notifier)
-                        .setUsername(value);
-                  },
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(
-                    hintText: "Password",
-                    label: Text("Password"),
-                    helperText: "Must be at least 8 characters long",
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      hintText: "Password",
+                      label: Text("Password"),
+                      helperText: "Must be at least 8 characters long",
+                    ),
+                    obscureText: true,
+                    onChanged: (value) {
+                      ref
+                          .read(credentialsFormProvider.notifier)
+                          .setPassword(value);
+                    },
                   ),
-                  obscureText: true,
-                  onChanged: (value) {
-                    ref
-                        .read(credentialsFormProvider.notifier)
-                        .setPassword(value);
-                  },
-                ),
-                ElevatedButton(
-                  onPressed: ref.watch(credentialsFormProvider).isValid
-                      ? signup
-                      : null,
-                  child: const Text("Sign Up"),
-                ),
-              ],
+                  const SizedBox(height: 50),
+                  ElevatedButton(
+                    onPressed: ref.watch(credentialsFormProvider).isValid
+                        ? signup
+                        : null,
+                    child: const Text("Sign Up"),
+                  ),
+                ],
+              ),
             ),
           )
         ],

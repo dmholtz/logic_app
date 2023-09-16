@@ -20,14 +20,14 @@ class WelcomeScreen extends ConsumerWidget {
             Column(children: [
               ElevatedButton(
                 onPressed: () {
-                  context.go('/sign-in');
+                  context.push('/sign-in');
                 },
                 child: const Text("Sign In"),
               ),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  context.go('/sign-up');
+                  context.push('/sign-up');
                 },
                 child: const Text("Sign Up"),
               ),
