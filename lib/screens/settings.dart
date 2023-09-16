@@ -1,11 +1,9 @@
-import 'dart:async';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:logic_app/state/access_token.dart';
+import 'package:logic_app/widgets/offline_snackbar.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -20,21 +18,26 @@ class SettingsScreen extends ConsumerWidget {
         });
 
         if (response.statusCode == 200) {
-          print("Logged out");
-        } else {
-          print(response.statusCode);
-          print(response.body);
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Row(
+              children: [
+                Icon(
+                  Icons.logout,
+                  color: Colors.white,
+                ),
+                SizedBox(width: 10),
+                Text("Successfully logged out"),
+              ],
+            )));
+          }
         }
-      } on TimeoutException {
-        print("Timeout");
-      } on SocketException {
-        print("Socket");
-      } on Error {
-        print("Error");
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(offlineSnackbar);
       }
 
       // always clear the access token
-      ref.read(accessTokenStateNotifierProvider.notifier).setAccessToken("");
+      ref.read(accessTokenStateNotifierProvider.notifier).deleteAccessToken();
       if (context.mounted) {
         context.go('/');
       }

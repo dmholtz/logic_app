@@ -31,7 +31,7 @@ final router = GoRouter(
       builder: (context, state) => const SignupScreen(),
     ),
     GoRoute(
-      path: "/sign-in",
+      path: "/log-in",
       builder: (context, state) => const LoginScreen(),
     ),
     ShellRoute(

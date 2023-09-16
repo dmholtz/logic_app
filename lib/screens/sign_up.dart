@@ -33,7 +33,7 @@ class SignupScreen extends ConsumerWidget {
         if (response.statusCode == 201) {
           if (context.mounted) {
             // Source https://stackoverflow.com/questions/68871880/do-not-use-buildcontexts-across-async-gaps
-            context.go('/sign-in');
+            context.go('/log-in');
           }
         } else {
           ref
@@ -117,7 +117,7 @@ class SignupScreen extends ConsumerWidget {
                       ),
                     ),
                     onTap: () {
-                      context.pushReplacement('/sign-in');
+                      context.pushReplacement('/log-in');
                     },
                   ),
                 ],

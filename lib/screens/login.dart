@@ -1,6 +1,4 @@
-import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:logic_app/state/access_token.dart';
 import 'package:logic_app/state/app_tour.dart';
 import 'package:logic_app/state/credentials_form.dart';
+import 'package:logic_app/widgets/offline_snackbar.dart';
 
 class LoginScreen extends ConsumerWidget {
   const LoginScreen({super.key});
@@ -16,6 +15,7 @@ class LoginScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     login() async {
+      // Extract the username and password from the form and build a JSON object
       var username =
           ref.watch(credentialsFormProvider.select((value) => value.username));
       var password =
@@ -31,9 +31,7 @@ class LoginScreen extends ConsumerWidget {
             body: jsonEncode(credentials),
             headers: {"Content-Type": "application/json"});
 
-        print(response.statusCode);
-        print(response.body);
-
+        // check the response code to see if login was successful
         if (response.statusCode == 200) {
           // save the access token
           String accessToken = response.body;
@@ -60,70 +58,87 @@ class LoginScreen extends ConsumerWidget {
               .read(credentialsFormProvider.notifier)
               .setErrorMessage(response.body);
         }
-      } on TimeoutException {
-        print("Timeout");
-      } on SocketException {
-        print("Socket");
-      } on Error {
-        print("Error");
-      }
-    }
-
-    checkToken() async {
-      String token = await ref.watch(accessTokenProvider);
-      if (token != "") {
-        if (context.mounted) {
-          context.go('/practice');
-        }
-      } else {
-        login();
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(offlineSnackbar);
       }
     }
 
     return Scaffold(
       appBar: AppBar(title: const Text("Log In")),
-      body: Column(
-        children: [
-          Form(
-            child: Column(
-              children: [
-                TextFormField(
-                  decoration: const InputDecoration(
-                    hintText: "Enter your username",
-                    label: Text("Username"),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              const Icon(Icons.login, size: 100),
+              Text(
+                "Provide your username and a password to log in into your account.",
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+              Form(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        hintText: "Choose a username",
+                        label: Text("Username"),
+                      ),
+                      onChanged: (value) {
+                        ref
+                            .read(credentialsFormProvider.notifier)
+                            .setUsername(value);
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        hintText: "Password",
+                        label: const Text("Password"),
+                        helperText:
+                            ref.watch(credentialsFormProvider).errorMessage,
+                        helperStyle: const TextStyle(color: Colors.red),
+                      ),
+                      obscureText: true,
+                      onChanged: (value) {
+                        ref
+                            .read(credentialsFormProvider.notifier)
+                            .setPassword(value);
+                      },
+                    ),
+                    const SizedBox(height: 50),
+                    ElevatedButton(
+                      onPressed: login,
+                      child: const Text("Log In"),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("Need an account?"),
+                  const SizedBox(width: 10),
+                  GestureDetector(
+                    child: const Text(
+                      "Sign Up",
+                      style: TextStyle(
+                        color: Colors.blue,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                    onTap: () {
+                      context.pushReplacement('/sign-up');
+                    },
                   ),
-                  onChanged: (value) {
-                    ref
-                        .read(credentialsFormProvider.notifier)
-                        .setUsername(value);
-                  },
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(
-                    hintText: "Enter your password",
-                    label: Text("Password"),
-                  ),
-                  obscureText: true,
-                  onChanged: (value) {
-                    ref
-                        .read(credentialsFormProvider.notifier)
-                        .setPassword(value);
-                  },
-                ),
-                ref.watch(credentialsFormProvider).errorMessage != ""
-                    ? Text(
-                        ref.watch(credentialsFormProvider).errorMessage,
-                        style: const TextStyle(color: Colors.red),
-                      )
-                    : const SizedBox(height: 0),
-                ElevatedButton(
-                  onPressed: checkToken,
-                  child: const Text("Log In"),
-                ),
-              ],
-            ),
-          )
-        ],
+                ],
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

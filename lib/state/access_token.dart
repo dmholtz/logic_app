@@ -9,6 +9,12 @@ class AccessTokenStateNotifier extends StateNotifier<String> {
     DatabaseSingleton db = ref.watch(databaseProvider);
     db.saveToken(accessToken);
   }
+
+  void deleteAccessToken() {
+    DatabaseSingleton db = ref.watch(databaseProvider);
+    db.deleteToken();
+    ref.invalidate(accessTokenProvider);
+  }
 }
 
 final accessTokenStateNotifierProvider =

@@ -1,12 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:logic_app/state/access_token.dart';
 
 class WelcomeScreen extends ConsumerWidget {
   const WelcomeScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    checkToken() async {
+      String token = await ref.watch(accessTokenProvider);
+      print(token);
+      if (token != "") {
+        if (context.mounted) {
+          context.go('/practice');
+        }
+      } else {
+        if (context.mounted) {
+          context.go('/log-in');
+        }
+      }
+    }
+
     return Scaffold(
       body: Center(
         child: Column(
@@ -20,7 +35,7 @@ class WelcomeScreen extends ConsumerWidget {
             Column(children: [
               ElevatedButton(
                 onPressed: () {
-                  context.push('/sign-in');
+                  checkToken();
                 },
                 child: const Text("Sign In"),
               ),

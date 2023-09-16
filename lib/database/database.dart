@@ -46,6 +46,11 @@ class DatabaseSingleton {
     final _ = await db.insert("tokens", {"id": 0, "token": token},
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
+
+  Future<void> deleteToken() async {
+    final db = await instance.db;
+    final _ = await db.delete("tokens");
+  }
 }
 
 final databaseProvider = Provider<DatabaseSingleton>(
