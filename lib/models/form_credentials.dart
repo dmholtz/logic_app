@@ -17,6 +17,7 @@ class CredentialsForm with _$CredentialsForm {
   factory CredentialsForm.empty() => const CredentialsForm(
         username: FormField(value: ""),
         password: FormField(value: ""),
+        errorMessage: "",
       );
 
   bool get isValid => username.isValid && password.isValid;

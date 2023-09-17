@@ -83,7 +83,7 @@ class LoginScreen extends ConsumerWidget {
                   children: [
                     TextFormField(
                       decoration: const InputDecoration(
-                        hintText: "Choose a username",
+                        hintText: "Username",
                         label: Text("Username"),
                       ),
                       onChanged: (value) {

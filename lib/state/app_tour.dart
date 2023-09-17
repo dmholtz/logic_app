@@ -36,7 +36,7 @@ final appTourContentProvider = StateProvider<List<AppTourContent>>(
       description:
           "Finish the app tour and start practicing. You can always come back to the app tour in the settings.",
       icon: Icon(
-        Icons.people,
+        Icons.golf_course,
         size: 100,
       ),
     ),

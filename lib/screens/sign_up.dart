@@ -31,6 +31,7 @@ class SignupScreen extends ConsumerWidget {
 
         // check the response code to see if signup was successful
         if (response.statusCode == 201) {
+          ref.watch(credentialsFormProvider.notifier).resetForm();
           if (context.mounted) {
             // Source https://stackoverflow.com/questions/68871880/do-not-use-buildcontexts-across-async-gaps
             context.go('/log-in');
