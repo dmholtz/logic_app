@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
 import 'package:go_router/go_router.dart';
+import 'package:logic_app/state/achievement.dart';
 import 'package:logic_app/state/navigation.dart';
 
 class _NavBarItemWithLocator extends BottomNavigationBarItem {
@@ -42,6 +43,7 @@ class HomeScreen extends ConsumerWidget {
 
   void _onTap(BuildContext context, WidgetRef ref, int index) {
     ref.read(activeNavBarProvider.notifier).setSelectedScreen(index);
+    ref.invalidate(achievementsProvider);
     context.go(
       tabs[index].navigationLocator,
     );

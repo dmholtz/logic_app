@@ -10,7 +10,6 @@ class WelcomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     checkToken() async {
       String token = await ref.watch(accessTokenProvider);
-      print(token);
       if (token != "") {
         if (context.mounted) {
           context.go('/practice');

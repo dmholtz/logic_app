@@ -8,6 +8,7 @@ class AccessTokenStateNotifier extends StateNotifier<String> {
   void setAccessToken(String accessToken) {
     DatabaseSingleton db = ref.watch(databaseProvider);
     db.saveToken(accessToken);
+    ref.invalidate(accessTokenProvider);
   }
 
   void deleteAccessToken() {
@@ -25,4 +26,8 @@ final accessTokenStateNotifierProvider =
 final accessTokenProvider = Provider<Future<String>>((ref) {
   DatabaseSingleton db = ref.watch(databaseProvider);
   return db.getToken();
+});
+
+final bearerAccessTokenProvider = Provider<Future<String>>((ref) {
+  return ref.watch(accessTokenProvider).then((token) => "Bearer $token");
 });
