@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:logic_app/state/players.dart';
+import 'package:logic_app/state/leaderboard.dart';
 import 'package:logic_app/widgets/leaderboard_entry.dart';
 
 class LeaderboardScreen extends ConsumerWidget {
@@ -8,29 +8,42 @@ class LeaderboardScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    var leaderboard = ref.watch(leaderboardEntriesProvider);
+
     return Scaffold(
-        appBar: AppBar(title: const Text("Leaderboard")),
-        body: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const LeaderboardHeaderEntry(),
-              const Divider(),
-              Expanded(
+      appBar: AppBar(title: const Text("Leaderboard")),
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const LeaderboardHeaderWidget(),
+            const Divider(),
+            leaderboard.when(data: (data) {
+              return Expanded(
                 child: ListView.separated(
                     itemBuilder: (BuildContext context, int index) {
-                      return LeaderboardEntry(
-                          player: ref.watch(playersProvider)[index]);
+                      return LeaderboardEntryWidget(
+                          player: data[index], rank: index + 1);
                     },
                     separatorBuilder: (BuildContext context, int index) {
                       return const SizedBox(height: 15);
                     },
-                    itemCount: ref.watch(playersProvider).length),
-              ),
-            ],
-          ),
-        ));
+                    itemCount: data.length),
+              );
+            }, loading: () {
+              return const Expanded(
+                child: Center(child: CircularProgressIndicator()),
+              );
+            }, error: (error, stackTrace) {
+              return const Expanded(
+                child: Center(child: Text("An unexpected error occured.")),
+              );
+            }),
+          ],
+        ),
+      ),
+    );
   }
 }

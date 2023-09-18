@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:logic_app/state/leaderboard.dart';
 
 class CompetitionScreen extends ConsumerWidget {
   const CompetitionScreen({super.key});
@@ -13,6 +14,7 @@ class CompetitionScreen extends ConsumerWidget {
         actions: [
           IconButton(
               onPressed: () {
+                ref.invalidate(leaderboardEntriesProvider);
                 context.push("/competition/leaderboard");
               },
               icon: const Icon(Icons.format_list_numbered))
