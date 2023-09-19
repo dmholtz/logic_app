@@ -8,6 +8,7 @@ import 'package:logic_app/state/quiz_lifecycle.dart';
 import 'package:logic_app/state/quiz_mode.dart';
 import 'package:logic_app/state/quiz_timer.dart';
 import 'package:logic_app/styles/quizLifecycleStyles.dart';
+import 'package:logic_app/utils/quiz_transform.dart';
 
 class QuizFeedbackScreen extends ConsumerWidget {
   const QuizFeedbackScreen({super.key});
@@ -42,7 +43,20 @@ class QuizFeedbackScreen extends ConsumerWidget {
       false => ElevatedButton(
           child: const Text("Next"),
           onPressed: () {
-            // TODO navigate to the next quiz
+            if (ref.watch(isLimitedQuizTimeProvider)) {
+              // Reset the countdownProvider when starting a new quiz
+              // Source: https://pub.dev/documentation/riverpod/latest/riverpod/Ref/invalidate.html
+              ref.invalidate(countdownProvider);
+            }
+
+            // reset any previous quiz state
+            ref.read(currentQuizProvider.notifier).resetQuiz();
+            ref
+                .read(quizLifecycleStateProvider.notifier)
+                .setQuizLifecycleState(QuizLifecycleState.answering);
+
+            // fetch a new quiz and update the quiz state accordingly
+            transformRemoteToLocalQuiz(ref, context);
           },
         ),
     };

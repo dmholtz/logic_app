@@ -14,14 +14,24 @@ final countdownProvider = StreamProvider<double>((ref) async* {
 
   yield time.toDouble();
   await for (final value in stream) {
-    if (ref.watch(quizLifecycleStateProvider) != QuizLifecycleState.answering) {
+    try {
+      if (ref.watch(quizLifecycleStateProvider) !=
+          QuizLifecycleState.answering) {
+        break;
+      }
+    } catch (e) {
       break;
     }
+
     yield value;
   }
-  if (ref.watch(quizLifecycleStateProvider) == QuizLifecycleState.answering) {
-    ref
-        .read(quizLifecycleStateProvider.notifier)
-        .setQuizLifecycleState(QuizLifecycleState.feedback);
+  try {
+    if (ref.watch(quizLifecycleStateProvider) == QuizLifecycleState.answering) {
+      ref
+          .read(quizLifecycleStateProvider.notifier)
+          .setQuizLifecycleState(QuizLifecycleState.feedback);
+    }
+  } catch (e) {
+    // do nothing
   }
 });
