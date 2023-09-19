@@ -2,6 +2,15 @@ enum QuizMode { practice, competition }
 
 enum QuizType { sat, taut, equiv }
 
+QuizType quizTypeFromString(String str) {
+  return switch (str.toUpperCase()) {
+    "SAT" => QuizType.sat,
+    "TAUT" => QuizType.taut,
+    "EQUIV" => QuizType.equiv,
+    _ => throw Exception("Invalid quiz type"),
+  };
+}
+
 enum Difficulty { easy, medium, hard }
 
 const minQuizTime = 10; // seconds

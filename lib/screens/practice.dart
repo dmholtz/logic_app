@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
+import 'package:logic_app/models/quiz_lifecycle.dart';
+import 'package:logic_app/state/current_quiz.dart';
 import 'package:logic_app/state/practice.dart';
+import 'package:logic_app/state/quiz_lifecycle.dart';
+import 'package:logic_app/state/quiz_mode.dart';
 import 'package:logic_app/state/quiz_timer.dart';
+import 'package:logic_app/utils/quiz_transform.dart';
 import 'package:logic_app/widgets/DifficultySelector.dart';
 import 'package:logic_app/widgets/NumVariableSlider.dart';
 import 'package:logic_app/widgets/QuizTypeSelector.dart';
@@ -28,14 +32,25 @@ class PracticeScreen extends ConsumerWidget {
               const NumVariableSlider(),
               const TimerSlider(),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   if (ref.watch(isLimitedQuizTimeProvider)) {
                     // Reset the countdownProvider when starting a new quiz
                     // Source: https://pub.dev/documentation/riverpod/latest/riverpod/Ref/invalidate.html
                     ref.invalidate(countdownProvider);
                   }
-                  context
-                      .goNamed('quiz', queryParameters: {"mode": "practice"});
+                  // set the quiz mode
+                  ref
+                      .read(quizModeStateNotifierProvider.notifier)
+                      .setPractice();
+
+                  // reset any previous quiz state
+                  ref.read(currentQuizProvider.notifier).resetQuiz();
+                  ref
+                      .read(quizLifecycleStateProvider.notifier)
+                      .setQuizLifecycleState(QuizLifecycleState.answering);
+
+                  // fetch a new quiz and update the quiz state accordingly
+                  transformRemoteToLocalQuiz(ref, context);
                 },
                 child: const Text('Reveal Quiz'),
               ),

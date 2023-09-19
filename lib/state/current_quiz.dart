@@ -18,15 +18,13 @@ class CurrentQuizStateNotifier extends StateNotifier<Quiz> {
 final currentQuizProvider =
     StateNotifierProvider<CurrentQuizStateNotifier, Quiz>(
   (ref) => CurrentQuizStateNotifier(
-    MultipleChoiceQuiz(
-      question: "Which are equivalent?",
+    SingleChoiceQuiz(
+      quizType: QuizType.taut,
+      question: "A | !A",
       possibleAnswers: [
-        PossibleAnswer(id: 0, answer: "A", isCorrect: true),
-        PossibleAnswer(id: 1, answer: "B", isCorrect: false),
-        PossibleAnswer(id: 2, answer: "C", isCorrect: true),
-        PossibleAnswer(id: 3, answer: "D", isCorrect: true),
+        PossibleAnswer(id: 0, answer: "Yes", isCorrect: true),
+        PossibleAnswer(id: 1, answer: "No", isCorrect: false),
       ],
-      quizMode: QuizMode.practice,
     ),
   ),
 );
@@ -35,14 +33,19 @@ final questionProvider = Provider<String>((ref) {
   return ref.watch(currentQuizProvider).question;
 });
 
+final questionTextProvider = Provider<String>((ref) {
+  return switch (ref.watch(currentQuizProvider).quizType) {
+    QuizType.sat => "Is this formula satisfiable?",
+    QuizType.taut => "Is this formula a tautology?",
+    QuizType.equiv =>
+      "Which of the formulas below is equivalent to this formula?",
+  };
+});
+
 final quizAnswerModeProvider = Provider<QuizQuestionType>((ref) {
   return ref.watch(currentQuizProvider).quizAnswerMode;
 });
 
 final possibleAnswersProvider = Provider<List<PossibleAnswer>>((ref) {
   return ref.watch(currentQuizProvider).possibleAnswers;
-});
-
-final quizModeProvider = Provider<QuizMode>((ref) {
-  return ref.watch(currentQuizProvider).quizMode;
 });

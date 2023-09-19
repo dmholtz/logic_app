@@ -8,6 +8,7 @@ import 'package:logic_app/state/current_quiz.dart';
 import 'package:logic_app/state/practice.dart';
 import 'package:logic_app/state/quiz_lifecycle.dart';
 import 'package:logic_app/state/quiz_timer.dart';
+import 'package:logic_app/styles/text.dart';
 
 class QuizScreen extends ConsumerWidget {
   const QuizScreen({Key? key}) : super(key: key);
@@ -95,12 +96,15 @@ class QuizScreen extends ConsumerWidget {
 
     Widget? countdownWidget;
     if (ref.watch(quizTimeProvider) <= maxQuizTime) {
-      AsyncValue<int> remainingTime = ref.watch(countdownProvider);
+      AsyncValue<double> remainingTime = ref.watch(countdownProvider);
 
       remainingTime.when(
         loading: () {},
         data: (data) {
-          countdownWidget = Text(data.toString());
+          countdownWidget = Text(
+            "Remaining time: ${data.toStringAsFixed(1)}s",
+            style: countdownTextStyle(context, ref, data),
+          );
         },
         error: (Object error, StackTrace stackTrace) {},
       );
@@ -108,9 +112,17 @@ class QuizScreen extends ConsumerWidget {
 
     return Center(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Text(ref.watch(questionProvider).toString()),
+          Text(
+            ref.watch(questionTextProvider).toString(),
+            style: Theme.of(context).textTheme.titleMedium,
+            textAlign: TextAlign.center,
+          ),
+          Text(
+            ref.watch(questionProvider).toString(),
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
           const SizedBox(height: 20),
           SingleChildScrollView(
             child: Column(

@@ -5,14 +5,14 @@ import 'package:logic_app/state/quiz_lifecycle.dart';
 
 // use a StreamProvider to periodically update the countdown
 // Source: https://pub.dev/documentation/riverpod/latest/riverpod/StreamProvider-class.html
-final countdownProvider = StreamProvider<int>((ref) async* {
+final countdownProvider = StreamProvider<double>((ref) async* {
   var time = ref.watch(quizTimeProvider);
 
   final stream =
-      Stream.periodic(const Duration(seconds: 1), (i) => time - i - 1)
-          .take(time);
+      Stream.periodic(const Duration(milliseconds: 100), (i) => time - i * 0.1)
+          .take(time * 10);
 
-  yield time;
+  yield time.toDouble();
   await for (final value in stream) {
     if (ref.watch(quizLifecycleStateProvider) != QuizLifecycleState.answering) {
       break;

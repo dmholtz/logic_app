@@ -2,16 +2,16 @@ import 'package:logic_app/models/possible_answer.dart';
 import 'package:logic_app/models/quiz_config.dart';
 
 abstract class Quiz {
+  final QuizType quizType;
   final String question;
   final QuizQuestionType quizAnswerMode;
   final List<PossibleAnswer> possibleAnswers;
-  final QuizMode quizMode;
 
   Quiz({
+    required this.quizType,
     required this.question,
     required this.quizAnswerMode,
     required this.possibleAnswers,
-    required this.quizMode,
   });
 
   bool isAnsweredCorrectly() {
@@ -25,25 +25,25 @@ class SingleChoiceQuiz extends Quiz {
   final int? selectedId;
 
   SingleChoiceQuiz({
+    required QuizType quizType,
     required String question,
     required List<PossibleAnswer> possibleAnswers,
-    required QuizMode quizMode,
     this.selectedId,
   }) : super(
+            quizType: quizType,
             question: question,
             quizAnswerMode: QuizQuestionType.singleChoice,
-            possibleAnswers: possibleAnswers,
-            quizMode: quizMode);
+            possibleAnswers: possibleAnswers);
 
   Quiz selectAnswer(int id) {
     return SingleChoiceQuiz(
+      quizType: quizType,
       question: question,
       possibleAnswers: possibleAnswers
           .map((pa) => pa.id == id
               ? pa.updateIsSelected(true)
               : pa.updateIsSelected(false))
           .toList(),
-      quizMode: quizMode,
       selectedId: id,
     );
   }
@@ -51,10 +51,10 @@ class SingleChoiceQuiz extends Quiz {
   @override
   Quiz resetQuiz() {
     return SingleChoiceQuiz(
+      quizType: quizType,
       question: question,
       possibleAnswers:
           possibleAnswers.map((pa) => pa.updateIsSelected(false)).toList(),
-      quizMode: quizMode,
       selectedId: null,
     );
   }
@@ -66,33 +66,33 @@ class SingleChoiceQuiz extends Quiz {
 
 class MultipleChoiceQuiz extends Quiz {
   MultipleChoiceQuiz({
+    required QuizType quizType,
     required String question,
     required List<PossibleAnswer> possibleAnswers,
-    required QuizMode quizMode,
   }) : super(
+          quizType: quizType,
           question: question,
           quizAnswerMode: QuizQuestionType.multipleChoice,
           possibleAnswers: possibleAnswers,
-          quizMode: quizMode,
         );
 
   Quiz answerQuestion(int id, bool isSelected) {
     return MultipleChoiceQuiz(
+      quizType: quizType,
       question: question,
       possibleAnswers: possibleAnswers
           .map((pa) => pa.id == id ? pa.updateIsSelected(isSelected) : pa)
           .toList(),
-      quizMode: quizMode,
     );
   }
 
   @override
   Quiz resetQuiz() {
     return MultipleChoiceQuiz(
+      quizType: quizType,
       question: question,
       possibleAnswers:
           possibleAnswers.map((pa) => pa.updateIsSelected(false)).toList(),
-      quizMode: quizMode,
     );
   }
 }

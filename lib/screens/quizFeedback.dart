@@ -5,6 +5,7 @@ import 'package:logic_app/models/quiz_lifecycle.dart';
 import 'package:logic_app/state/current_quiz.dart';
 import 'package:logic_app/state/practice.dart';
 import 'package:logic_app/state/quiz_lifecycle.dart';
+import 'package:logic_app/state/quiz_mode.dart';
 import 'package:logic_app/state/quiz_timer.dart';
 import 'package:logic_app/styles/quizLifecycleStyles.dart';
 
@@ -23,7 +24,7 @@ class QuizFeedbackScreen extends ConsumerWidget {
 
     Widget nextAction = switch (
         !ref.watch(currentQuizProvider).isAnsweredCorrectly() &&
-            ref.watch(quizModeProvider) == QuizMode.practice) {
+            ref.watch(quizModeStateNotifierProvider) == QuizMode.practice) {
       true => ElevatedButton(
           child: const Text("Try again"),
           onPressed: () {
@@ -40,7 +41,9 @@ class QuizFeedbackScreen extends ConsumerWidget {
         ),
       false => ElevatedButton(
           child: const Text("Next"),
-          onPressed: () {},
+          onPressed: () {
+            // TODO navigate to the next quiz
+          },
         ),
     };
 
