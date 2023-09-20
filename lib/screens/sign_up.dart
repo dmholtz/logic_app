@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:logic_app/state/credentials_form.dart';
-import 'package:logic_app/widgets/offline_snackbar.dart';
+import 'package:logic_app/widgets/snackbars.dart';
 
 class SignupScreen extends ConsumerWidget {
   const SignupScreen({super.key});

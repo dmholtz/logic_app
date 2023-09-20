@@ -38,6 +38,10 @@ class QuizFeedbackScreen extends ConsumerWidget {
               // Source: https://pub.dev/documentation/riverpod/latest/riverpod/Ref/invalidate.html
               ref.invalidate(countdownProvider);
             }
+            // start the quiz timer
+            ref
+                .read(quizStartTimeStateNotifierProvider.notifier)
+                .startQuizTime();
           },
         ),
       false => ElevatedButton(
@@ -48,20 +52,6 @@ class QuizFeedbackScreen extends ConsumerWidget {
             } else {
               context.goNamed("competition");
             }
-            //if (ref.watch(isLimitedQuizTimeProvider)) {
-            //  // Reset the countdownProvider when starting a new quiz
-            //  // Source: https://pub.dev/documentation/riverpod/latest/riverpod/Ref/invalidate.html
-            //  ref.invalidate(countdownProvider);
-            //}
-//
-            //// reset any previous quiz state
-            //ref.read(currentQuizProvider.notifier).resetQuiz();
-            //ref
-            //    .read(quizLifecycleStateProvider.notifier)
-            //    .setQuizLifecycleState(QuizLifecycleState.answering);
-//
-            //// fetch a new quiz and update the quiz state accordingly
-            //transformRemoteToLocalQuiz(ref, context);
           },
         ),
     };

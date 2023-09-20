@@ -35,7 +35,6 @@ final quizSolvedSubmissionResponseProvider =
         headers: {"Authorization": token},
         body: jsonEncode(ref.watch(quizSolvedSubmissionStateNotiferProvider)),
       );
-      print("submitting answer");
       return response.then((data) {
         if (data.statusCode != 200) {
           throw Exception("Failed to submit answer to the server");

@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:logic_app/state/access_token.dart';
 import 'package:logic_app/state/app_tour.dart';
 import 'package:logic_app/state/credentials_form.dart';
-import 'package:logic_app/widgets/offline_snackbar.dart';
+import 'package:logic_app/widgets/snackbars.dart';
 
 class LoginScreen extends ConsumerWidget {
   const LoginScreen({super.key});

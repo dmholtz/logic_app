@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:logic_app/models/possible_answer.dart';
 import 'package:logic_app/models/quiz.dart';
 import 'package:logic_app/models/quiz_config.dart';
 import 'package:logic_app/models/quiz_lifecycle.dart';
 import 'package:logic_app/services/submit_answer.dart';
 import 'package:logic_app/state/current_quiz.dart';
-import 'package:logic_app/state/practice.dart';
 import 'package:logic_app/state/quiz_lifecycle.dart';
+import 'package:logic_app/state/quiz_mode.dart';
 import 'package:logic_app/state/quiz_timer.dart';
 import 'package:logic_app/styles/text.dart';
-import 'package:logic_app/utils/quiz_transform.dart';
 
 class QuizScreen extends ConsumerWidget {
   const QuizScreen({Key? key}) : super(key: key);
@@ -88,25 +88,11 @@ class QuizScreen extends ConsumerWidget {
         ),
       QuizLifecycleState.solution => ElevatedButton(
           onPressed: () {
-            if (ref.watch(isLimitedQuizTimeProvider)) {
-              // Reset the countdownProvider when starting a new quiz
-              // Source: https://pub.dev/documentation/riverpod/latest/riverpod/Ref/invalidate.html
-              ref.invalidate(countdownProvider);
+            if (ref.watch(quizModeStateNotifierProvider) == QuizMode.practice) {
+              context.goNamed("practice");
+            } else {
+              context.goNamed("competition");
             }
-
-            // reset any previous quiz state
-            ref.read(currentQuizProvider.notifier).resetQuiz();
-            ref
-                .read(quizLifecycleStateProvider.notifier)
-                .setQuizLifecycleState(QuizLifecycleState.answering);
-
-            // fetch a new quiz and update the quiz state accordingly
-            transformRemoteToLocalQuiz(ref, context);
-
-            // start the quiz timer
-            ref
-                .read(quizStartTimeStateNotifierProvider.notifier)
-                .startQuizTime();
           },
           child: const Text("Next"),
         ),
@@ -114,7 +100,7 @@ class QuizScreen extends ConsumerWidget {
     };
 
     Widget? countdownWidget;
-    if (ref.watch(quizConfigTimeProvider) <= maxQuizTime) {
+    if (ref.watch(isLimitedQuizTimeProvider)) {
       AsyncValue<double> remainingTime = ref.watch(countdownProvider);
 
       remainingTime.when(

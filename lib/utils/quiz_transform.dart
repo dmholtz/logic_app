@@ -7,7 +7,7 @@ import 'package:logic_app/models/quiz_config.dart';
 import 'package:logic_app/state/current_quiz.dart';
 import 'package:logic_app/state/quiz_mode.dart';
 import 'package:logic_app/state/remote_quiz.dart';
-import 'package:logic_app/widgets/offline_snackbar.dart';
+import 'package:logic_app/widgets/snackbars.dart';
 
 // Decouples the asynchronous fetching of quizzes from the remote server and
 // the synchronous access to the current quiz state.
@@ -50,6 +50,6 @@ transformRemoteToLocalQuiz(WidgetRef ref, BuildContext context) async {
       }
     }
   } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(offlineSnackbar);
+    ScaffoldMessenger.of(context).showSnackBar(noQuizSnackbar);
   }
 }

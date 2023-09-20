@@ -24,26 +24,4 @@ void submitAnswer(dynamic ref) {
   ref
       .read(quizSolvedSubmissionStateNotiferProvider.notifier)
       .updateSubmission(submission);
-
-  //ref.watch(bearerAccessTokenProvider).then((token) {
-  //    var response = http.get(
-  //      Uri.parse(url),
-  //      headers: {"Authorization": token},
-  //    );
-  //    return response.then((data) {
-  //      if (data.statusCode != 200) {
-  //        throw Exception("Failed to load quiz");
-  //      }
-  //      var json = jsonDecode(data.body);
-  //      return RemoteQuiz.fromJson(json);
-  //    });
-  //  });
-//
-  //http.post(
-  //  Uri.parse('https://localhost:443/quiz/solve'),
-  //  headers: <String, String>{
-  //    'Content-Type': 'application/json; charset=UTF-8',
-  //  },
-  //  body: jsonEncode(submission.toJson()),
-  //);
 }
