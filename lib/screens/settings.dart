@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -19,17 +20,7 @@ class SettingsScreen extends ConsumerWidget {
 
         if (response.statusCode == 200) {
           if (context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                content: Row(
-              children: [
-                Icon(
-                  Icons.logout,
-                  color: Colors.white,
-                ),
-                SizedBox(width: 10),
-                Text("Successfully logged out"),
-              ],
-            )));
+            ScaffoldMessenger.of(context).showSnackBar(logoutSnackbar);
           }
         }
       } catch (e) {
@@ -38,8 +29,27 @@ class SettingsScreen extends ConsumerWidget {
 
       // always clear the access token
       ref.read(accessTokenStateNotifierProvider.notifier).deleteAccessToken();
+
+      // navigate to the welcome screen
       if (context.mounted) {
         context.go('/');
+      }
+    }
+
+    reset() async {
+      try {
+        final response = await http
+            .post(Uri.parse("https://localhost:443/user/reset"), headers: {
+          "Authorization": "Bearer ${await ref.read(accessTokenProvider)}"
+        });
+
+        if (response.statusCode == 200) {
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(resetProgressSnackbar);
+          }
+        }
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(offlineSnackbar);
       }
     }
 
@@ -50,17 +60,82 @@ class SettingsScreen extends ConsumerWidget {
       body: Center(
         child: Column(
           children: [
-            const Text('Settings'),
-            ElevatedButton(
-              onPressed: () {
-                context.go('/app-tour');
-              },
-              child: const Text("App Tour"),
+            CupertinoListSection.insetGrouped(
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              footer: Text(
+                "The app tour will guide you through the app's features.",
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              children: [
+                CupertinoListTile(
+                  title: const Text("App Tour"),
+                  trailing: const Icon(Icons.tour),
+                  onTap: () {
+                    context.go('/app-tour');
+                  },
+                ),
+              ],
             ),
-            ElevatedButton(
-              onPressed: logout,
-              child: const Text("Logout"),
-            )
+            CupertinoListSection.insetGrouped(
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              footer: Text(
+                "Reset will delete the achievements and all points won in competition mode.",
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              children: [
+                CupertinoListTile(
+                  title: Text(
+                    "Reset Progress",
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium!
+                        .copyWith(color: Colors.red),
+                  ),
+                  trailing: const Icon(Icons.restore),
+                  onTap: () {
+                    showCupertinoDialog(
+                      context: context,
+                      builder: (BuildContext context) => CupertinoAlertDialog(
+                        title: const Text("Reset Progress"),
+                        content: const Text(
+                            "Are you sure you want to reset all achievements and points? This action cannot be undone."),
+                        actions: <CupertinoDialogAction>[
+                          CupertinoDialogAction(
+                            isDefaultAction: true, // action text is bold
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text("Cancel"),
+                          ),
+                          CupertinoDialogAction(
+                            isDestructiveAction: true, // action text is red
+                            onPressed: () {
+                              reset();
+                              Navigator.pop(context);
+                            },
+                            child: const Text("Confirm Reset"),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+            CupertinoListSection.insetGrouped(
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              footer: Text(
+                "Logout from the app. You can re-login at any time and will be able to continue where you left off.",
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              children: [
+                CupertinoListTile(
+                  title: const Text("Logout"),
+                  trailing: const Icon(Icons.logout),
+                  onTap: logout,
+                ),
+              ],
+            ),
           ],
         ),
       ),
