@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logic_app/models/quiz_lifecycle.dart';
 import 'package:logic_app/state/current_quiz.dart';
-import 'package:logic_app/state/practice.dart';
 import 'package:logic_app/state/quiz_lifecycle.dart';
 import 'package:logic_app/state/quiz_mode.dart';
 import 'package:logic_app/state/quiz_timer.dart';
@@ -32,16 +31,20 @@ class PracticeScreen extends ConsumerWidget {
               const NumVariableSlider(),
               const TimerSlider(),
               ElevatedButton(
-                onPressed: () async {
+                onPressed: () {
+                  // set the quiz mode
+                  ref
+                      .read(quizModeStateNotifierProvider.notifier)
+                      .setPractice();
+
+                  // fetch a new quiz and update the quiz state accordingly
+                  transformRemoteToLocalQuiz(ref, context);
+
                   if (ref.watch(isLimitedQuizTimeProvider)) {
                     // Reset the countdownProvider when starting a new quiz
                     // Source: https://pub.dev/documentation/riverpod/latest/riverpod/Ref/invalidate.html
                     ref.invalidate(countdownProvider);
                   }
-                  // set the quiz mode
-                  ref
-                      .read(quizModeStateNotifierProvider.notifier)
-                      .setPractice();
 
                   // reset any previous quiz state
                   ref.read(currentQuizProvider.notifier).resetQuiz();
@@ -49,8 +52,10 @@ class PracticeScreen extends ConsumerWidget {
                       .read(quizLifecycleStateProvider.notifier)
                       .setQuizLifecycleState(QuizLifecycleState.answering);
 
-                  // fetch a new quiz and update the quiz state accordingly
-                  transformRemoteToLocalQuiz(ref, context);
+                  // start the quiz timer
+                  ref
+                      .read(quizStartTimeStateNotifierProvider.notifier)
+                      .startQuizTime();
                 },
                 child: const Text('Reveal Quiz'),
               ),

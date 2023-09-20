@@ -1,12 +1,26 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logic_app/models/quiz_lifecycle.dart';
+import 'package:logic_app/services/submit_answer.dart';
 import 'package:logic_app/state/practice.dart';
 import 'package:logic_app/state/quiz_lifecycle.dart';
+
+class QuizStartTimeStateNotifier extends StateNotifier<DateTime> {
+  QuizStartTimeStateNotifier() : super(DateTime.now());
+
+  void startQuizTime() {
+    state = DateTime.now();
+  }
+}
+
+final quizStartTimeStateNotifierProvider =
+    StateNotifierProvider<QuizStartTimeStateNotifier, DateTime>(
+  (ref) => QuizStartTimeStateNotifier(),
+);
 
 // use a StreamProvider to periodically update the countdown
 // Source: https://pub.dev/documentation/riverpod/latest/riverpod/StreamProvider-class.html
 final countdownProvider = StreamProvider<double>((ref) async* {
-  var time = ref.watch(quizTimeProvider);
+  var time = ref.watch(quizConfigTimeProvider);
 
   final stream =
       Stream.periodic(const Duration(milliseconds: 100), (i) => time - i * 0.1)
@@ -27,6 +41,7 @@ final countdownProvider = StreamProvider<double>((ref) async* {
   }
   try {
     if (ref.watch(quizLifecycleStateProvider) == QuizLifecycleState.answering) {
+      submitAnswer(ref);
       ref
           .read(quizLifecycleStateProvider.notifier)
           .setQuizLifecycleState(QuizLifecycleState.feedback);

@@ -11,9 +11,9 @@ import 'package:logic_app/widgets/offline_snackbar.dart';
 
 // Decouples the asynchronous fetching of quizzes from the remote server and
 // the synchronous access to the current quiz state.
-void transformRemoteToLocalQuiz(WidgetRef ref, BuildContext context) async {
+transformRemoteToLocalQuiz(WidgetRef ref, BuildContext context) async {
   try {
-    var remoteQuiz = await ref.read(remoteQuizProvider.future);
+    var remoteQuiz = await ref.refresh(remoteQuizProvider.future);
     var quizType = quizTypeFromString(remoteQuiz.type);
     var possibleAnswers = List.generate(
       remoteQuiz.answers.length,
@@ -25,12 +25,16 @@ void transformRemoteToLocalQuiz(WidgetRef ref, BuildContext context) async {
 
     Quiz quiz = switch (quizType) {
       QuizType.sat || QuizType.taut => SingleChoiceQuiz(
+          quizId: remoteQuiz.quizId,
           quizType: quizType,
+          timeLimit: remoteQuiz.timeLimit.toInt(),
           question: remoteQuiz.question,
           possibleAnswers: possibleAnswers,
         ),
       QuizType.equiv => MultipleChoiceQuiz(
+          quizId: remoteQuiz.quizId,
           quizType: quizType,
+          timeLimit: remoteQuiz.timeLimit.toInt(),
           question: remoteQuiz.question,
           possibleAnswers: possibleAnswers,
         )
@@ -46,7 +50,6 @@ void transformRemoteToLocalQuiz(WidgetRef ref, BuildContext context) async {
       }
     }
   } catch (e) {
-    // show snackbar in case of any errors
     ScaffoldMessenger.of(context).showSnackBar(offlineSnackbar);
   }
 }

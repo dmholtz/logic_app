@@ -17,16 +17,15 @@ class CurrentQuizStateNotifier extends StateNotifier<Quiz> {
 
 final currentQuizProvider =
     StateNotifierProvider<CurrentQuizStateNotifier, Quiz>(
-  (ref) => CurrentQuizStateNotifier(
-    SingleChoiceQuiz(
-      quizType: QuizType.taut,
-      question: "A | !A",
+  (ref) => CurrentQuizStateNotifier(SingleChoiceQuiz(
+      quizId: 0,
+      quizType: QuizType.sat,
+      timeLimit: maxQuizTime + 1,
+      question: "A & !A",
       possibleAnswers: [
-        PossibleAnswer(id: 0, answer: "Yes", isCorrect: true),
-        PossibleAnswer(id: 1, answer: "No", isCorrect: false),
-      ],
-    ),
-  ),
+        PossibleAnswer(id: 0, answer: "yes", isCorrect: true),
+        PossibleAnswer(id: 0, answer: "no", isCorrect: false)
+      ])),
 );
 
 final questionProvider = Provider<String>((ref) {
@@ -48,4 +47,12 @@ final quizAnswerModeProvider = Provider<QuizQuestionType>((ref) {
 
 final possibleAnswersProvider = Provider<List<PossibleAnswer>>((ref) {
   return ref.watch(currentQuizProvider).possibleAnswers;
+});
+
+final quizTimeLimitProvider = Provider<int>((ref) {
+  return ref.watch(currentQuizProvider).timeLimit;
+});
+
+final isLimitedQuizTimeProvider = Provider<bool>((ref) {
+  return ref.watch(quizTimeLimitProvider) <= maxQuizTime;
 });

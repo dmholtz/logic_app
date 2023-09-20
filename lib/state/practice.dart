@@ -40,37 +40,33 @@ final difficultyProvider =
 final numVarsProvider =
     Provider<int>((ref) => ref.watch(quizConfigProvider).numVars);
 
-final quizTimeProvider =
+final quizConfigTimeProvider =
     Provider<int>((ref) => ref.watch(quizConfigProvider).time);
-
-final isLimitedQuizTimeProvider = Provider<bool>((ref) {
-  return ref.watch(quizTimeProvider) <= maxQuizTime;
-});
 
 // maps quizTimeProvider to a value between 0 and 1 for the slider
 final quizTimeSliderValueProvider = Provider<double>((ref) {
-  if (ref.watch(quizTimeProvider) > maxQuizTime) {
+  if (ref.watch(quizConfigTimeProvider) > maxQuizTime) {
     return 1;
   } else {
-    return (ref.watch(quizTimeProvider) - minQuizTime) /
+    return (ref.watch(quizConfigTimeProvider) - minQuizTime) /
         (maxQuizTime - minQuizTime + quizTimeStep);
   }
 });
 
 // maps quizTimeProvider to a string for the slider label
 final quizTimeSliderLabelProvider = Provider<String>((ref) {
-  if (ref.watch(quizTimeProvider) > maxQuizTime) {
+  if (ref.watch(quizConfigTimeProvider) > maxQuizTime) {
     return "∞";
   } else {
-    return "${ref.watch(quizTimeProvider)}";
+    return "${ref.watch(quizConfigTimeProvider)}";
   }
 });
 
 // maps quizTimeProvider to a string descriptor for the selected time
 final quizTimeStringProvider = Provider<String>((ref) {
-  if (ref.watch(quizTimeProvider) > maxQuizTime) {
+  if (ref.watch(quizConfigTimeProvider) > maxQuizTime) {
     return "no timeout";
   } else {
-    return "${ref.watch(quizTimeProvider)} seconds";
+    return "${ref.watch(quizConfigTimeProvider)} seconds";
   }
 });

@@ -42,6 +42,7 @@ final router = GoRouter(
       routes: [
         GoRoute(
           path: "/practice",
+          name: "practice",
           pageBuilder: (context, state) {
             return CustomTransitionPage(
               child: const PracticeScreen(),
@@ -80,6 +81,7 @@ final router = GoRouter(
         ),
         GoRoute(
             path: "/competition",
+            name: "competition",
             pageBuilder: (context, state) {
               return CustomTransitionPage(
                 child: const CompetitionScreen(),
