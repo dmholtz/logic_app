@@ -37,6 +37,12 @@ class PracticeScreen extends ConsumerWidget {
                       .read(quizModeStateNotifierProvider.notifier)
                       .setPractice();
 
+                  // reset any previous quiz state
+                  ref.read(currentQuizProvider.notifier).resetQuiz();
+                  ref
+                      .read(quizLifecycleStateProvider.notifier)
+                      .setQuizLifecycleState(QuizLifecycleState.answering);
+
                   // fetch a new quiz and update the quiz state accordingly
                   transformRemoteToLocalQuiz(ref, context);
 
@@ -45,12 +51,6 @@ class PracticeScreen extends ConsumerWidget {
                     // Source: https://pub.dev/documentation/riverpod/latest/riverpod/Ref/invalidate.html
                     ref.invalidate(countdownProvider);
                   }
-
-                  // reset any previous quiz state
-                  ref.read(currentQuizProvider.notifier).resetQuiz();
-                  ref
-                      .read(quizLifecycleStateProvider.notifier)
-                      .setQuizLifecycleState(QuizLifecycleState.answering);
 
                   // start the quiz timer
                   ref

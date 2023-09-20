@@ -17,8 +17,8 @@ const minQuizTime = 10; // seconds
 const maxQuizTime = 60; // seconds
 const quizTimeStep = 5; // seconds
 
-const minNumVars = 1;
-const maxNumVars = 5;
+const minNumVars = 2;
+const maxNumVars = 6;
 
 class QuizConfig {
   final QuizType quizType;
