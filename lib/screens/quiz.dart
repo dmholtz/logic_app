@@ -116,43 +116,32 @@ class QuizScreen extends ConsumerWidget {
     }
 
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text(
-                  ref.watch(questionTextProvider).toString(),
-                  style: Theme.of(context).textTheme.titleMedium,
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 20),
-                Text(
-                  ref.watch(questionProvider).toString(),
-                  style: Theme.of(context).textTheme.titleLarge,
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 20),
-          SingleChildScrollView(
-            child: Column(
-              children: answerWidgets,
-            ),
-          ),
-          Column(
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
+              Text(
+                ref.watch(questionTextProvider).toString(),
+                style: Theme.of(context).textTheme.titleMedium,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
+              Text(
+                ref.watch(questionProvider).toString(),
+                style: Theme.of(context).textTheme.titleLarge,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
+              ...answerWidgets,
               const SizedBox(height: 20),
               countdownWidget ?? const SizedBox.shrink(),
               const SizedBox(height: 20),
               bottomButton,
             ],
           ),
-        ],
+        ),
       ),
     );
   }
