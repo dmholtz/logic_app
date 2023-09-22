@@ -4,9 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:logic_app/models/quiz_config.dart';
 import 'package:logic_app/models/quiz_lifecycle.dart';
 import 'package:logic_app/screens/quiz.dart';
-import 'package:logic_app/screens/quizFeedback.dart';
+import 'package:logic_app/screens/quiz_feedback.dart';
 import 'package:logic_app/state/quiz_lifecycle.dart';
-import 'package:logic_app/styles/quizLifecycleStyles.dart';
+import 'package:logic_app/styles/quiz_lifecycle_styles.dart';
 
 class QuizWrapperScreen extends ConsumerWidget {
   final QuizMode mode;

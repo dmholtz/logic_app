@@ -8,7 +8,7 @@ import 'package:logic_app/state/quiz_lifecycle.dart';
 import 'package:logic_app/state/quiz_mode.dart';
 import 'package:logic_app/state/quiz_solved_submission.dart';
 import 'package:logic_app/state/quiz_timer.dart';
-import 'package:logic_app/styles/quizLifecycleStyles.dart';
+import 'package:logic_app/styles/quiz_lifecycle_styles.dart';
 
 class QuizFeedbackScreen extends ConsumerWidget {
   const QuizFeedbackScreen({super.key});

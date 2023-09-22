@@ -6,10 +6,10 @@ import 'package:logic_app/state/quiz_lifecycle.dart';
 import 'package:logic_app/state/quiz_mode.dart';
 import 'package:logic_app/state/quiz_timer.dart';
 import 'package:logic_app/utils/quiz_transform.dart';
-import 'package:logic_app/widgets/DifficultySelector.dart';
-import 'package:logic_app/widgets/NumVariableSlider.dart';
-import 'package:logic_app/widgets/QuizTypeSelector.dart';
-import 'package:logic_app/widgets/TimerSlider.dart';
+import 'package:logic_app/widgets/difficulty_selector.dart';
+import 'package:logic_app/widgets/num_variable_slider.dart';
+import 'package:logic_app/widgets/quiz_type_selector.dart';
+import 'package:logic_app/widgets/time_slider.dart';
 
 class PracticeScreen extends ConsumerWidget {
   const PracticeScreen({Key? key}) : super(key: key);

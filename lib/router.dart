@@ -8,10 +8,9 @@ import 'package:logic_app/screens/leaderboard.dart';
 import 'package:logic_app/screens/login.dart';
 import 'package:logic_app/screens/practice.dart';
 import 'package:logic_app/screens/progress.dart';
-import 'package:logic_app/screens/quizWrapper.dart';
+import 'package:logic_app/screens/quiz_wrapper.dart';
 import 'package:logic_app/screens/settings.dart';
 import 'package:logic_app/screens/sign_up.dart';
-import 'package:logic_app/screens/statistics.dart';
 import 'package:logic_app/screens/welcome.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -72,12 +71,7 @@ final router = GoRouter(
               },
             );
           },
-          routes: [
-            GoRoute(
-              path: "statistics",
-              builder: (context, state) => const StatisticsScreen(),
-            ),
-          ],
+          routes: const [],
         ),
         GoRoute(
             path: "/competition",
@@ -152,30 +146,6 @@ final router = GoRouter(
       path: "/app-tour",
       name: "app-tour",
       builder: (context, state) => const AppTourScreen(),
-      //pageBuilder: (context, state) {
-      //  var queryParameters = state.queryParameters;
-      //  var quizMode = QuizMode.practice;
-      //  if (queryParameters.containsKey("quiz_mode")) {
-      //    var quizModeParam = queryParameters['quiz_mode'];
-      //    switch (quizModeParam) {
-      //      case "practice":
-      //        quizMode = QuizMode.practice;
-      //      case "competition":
-      //        quizMode = QuizMode.competition;
-      //    }
-      //  }
-//
-      //  return CustomTransitionPage(
-      //      child: QuizWrapperScreen(mode: quizMode),
-      //      transitionsBuilder:
-      //          (context, animation, secondaryAnimation, child) {
-      //        return FadeTransition(
-      //          opacity:
-      //              CurveTween(curve: Curves.easeOutCirc).animate(animation),
-      //          child: child,
-      //        );
-      //      });
-      //},
     ),
   ],
 );
