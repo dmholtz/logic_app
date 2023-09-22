@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:logic_app/state/achievement.dart';
 import 'package:logic_app/widgets/award_tile.dart';
 import 'package:logic_app/widgets/star_progress_indicator.dart';
@@ -15,14 +14,6 @@ class ProgressScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Your Learning Progress"),
-        actions: [
-          IconButton(
-            onPressed: () {
-              context.push('/progress/statistics');
-            },
-            icon: const Icon(Icons.percent_outlined),
-          ),
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
